@@ -6,10 +6,13 @@ RUN echo 'deb https://homegear.eu/packages/Debian/ jessie/' >> /etc/apt/sources.
 RUN apt-get update && apt-get -y install homegear homegear-homematicbidcos homegear-homematicwired homegear-insteon homegear-max homegear-philipshue homegear-sonos homegear-kodi homegear-ipcam homegear-beckhoff homegear-knx homegear-enocean homegear-intertechno
 RUN cp -R /etc/homegear /etc/homegear.config
 RUN cp -R /var/lib/homegear /var/lib/homegear.data
+# Inspired by Dockerfile from visevision
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 VOLUME ["/etc/homegear", "/var/lib/homegear", "/var/log/homegear"]
 
 COPY start.sh /start.sh
+RUN chmod +x /start.sh
 CMD /start.sh
 
 EXPOSE 2001 2002 2003
