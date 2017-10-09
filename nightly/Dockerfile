@@ -1,8 +1,10 @@
-FROM debian:jessie
+FROM debian:stretch
 MAINTAINER Sathya Laufer <sathya@homegear.email>
-RUN apt-get update && apt-get -y install apt-transport-https wget ca-certificates apt-utils
+RUN apt-get update && apt-get -y install apt-transport-https apt-utils
+RUN apt-get update && apt-get -y install wget ca-certificates gnupg
+#RUN apt-get update && apt-get -y install libreadline7 insserv procps ntp libenchant1c2a libltdl7 libmariadbclient18 libmcrypt4 libxml2 libxslt1.1 unzip p7zip-full libqdbm14 libssl1.1 libgnutlsxx28
 RUN wget https://homegear.eu/packages/Release.key && apt-key add Release.key && rm Release.key
-RUN echo 'deb https://homegear.eu/packages/Debian/ jessie/' >> /etc/apt/sources.list.d/homegear.list
+RUN echo 'deb https://homegear.eu/packages/Debian/ stretch/' >> /etc/apt/sources.list.d/homegear.list
 COPY installNightly.sh /installNightly.sh
 RUN chmod +x /installNightly.sh
 RUN /installNightly.sh
