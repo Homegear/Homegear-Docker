@@ -1,16 +1,15 @@
 FROM resin/rpi-raspbian:stretch
 MAINTAINER Sathya Laufer <sathya@homegear.email>
-RUN apt-get update && apt-get -y install apt-transport-https apt-utils
-RUN apt-get update && apt-get -y install wget ca-certificates gnupg
-RUN wget https://homegear.eu/packages/Release.key && apt-key add Release.key && rm Release.key
-RUN echo 'deb https://homegear.eu/packages/Raspbian/ stretch/' >> /etc/apt/sources.list.d/homegear.list
+RUN apt-get update && apt-get -y install apt-transport-https apt-utils wget ca-certificates gnupg
 COPY installNightly.sh /installNightly.sh
-RUN chmod +x /installNightly.sh
-RUN /installNightly.sh
-RUN cp -R /etc/homegear /etc/homegear.config
-RUN cp -R /var/lib/homegear /var/lib/homegear.data
-# Inspired by Dockerfile from visevision
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN \
+    wget https://homegear.eu/packages/Release.key && apt-key add Release.key && rm Release.key; \
+    echo 'deb https://homegear.eu/packages/Raspbian/ stretch/' >> /etc/apt/sources.list.d/homegear.list; \
+    chmod +x /installNightly.sh; \
+    /installNightly.sh; \
+    cp -R /etc/homegear /etc/homegear.config; \
+    cp -R /var/lib/homegear /var/lib/homegear.data; \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 VOLUME ["/etc/homegear", "/var/lib/homegear", "/var/log/homegear"]
 
