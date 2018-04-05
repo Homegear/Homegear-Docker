@@ -1,6 +1,6 @@
 FROM debian:stretch
 MAINTAINER Sathya Laufer <sathya@homegear.email>
-RUN apt-get update && apt-get -y install apt-transport-https apt-utils wget ca-certificates gnupg systemd libzip4 libavahi-client3 libavahi-client-dev
+RUN apt-get update && apt-get -y install apt-transport-https apt-utils wget ca-certificates gnupg libzip4 libavahi-client3 libavahi-client-dev
 COPY installNightly.sh /installNightly.sh
 RUN \
     wget https://homegear.eu/packages/Release.key && apt-key add Release.key && rm Release.key; \
