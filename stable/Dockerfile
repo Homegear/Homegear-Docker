@@ -4,7 +4,7 @@ RUN apt-get update && apt-get -y install apt-transport-https wget ca-certificate
 RUN \
     touch /tmp/HOMEGEAR_STATIC_INSTALLATION; \
     wget https://homegear.eu/packages/Release.key && apt-key add Release.key && rm Release.key; \
-    echo 'deb https://homegear.eu/packages/Debian/ stretch/' >> /etc/apt/sources.list.d/homegear.list; \
+    echo 'deb https://apt.homegear.eu/Debian/ stretch/' >> /etc/apt/sources.list.d/homegear.list; \
     apt-get update && apt-get -y install libhomegear-node homegear homegear-nodes-core homegear-nodes-extra homegear-homematicbidcos homegear-homematicwired homegear-insteon homegear-max homegear-philipshue homegear-sonos homegear-kodi homegear-ipcam homegear-beckhoff homegear-knx homegear-enocean homegear-intertechno homegear-rsl homegear-rs2w homegear-mbus homegear-zwave homegear-ccu2 homegear-easyled homegear-easyled2 homegear-easycam homegear-influxdb; \
     rm -f /etc/homegear/dh1024.pem; \
     rm -f /etc/homegear/homegear.crt; \
