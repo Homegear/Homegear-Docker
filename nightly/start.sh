@@ -1,7 +1,13 @@
 #/bin/bash
 
+_term() {
+	service homegear-influxdb stop
+	service homegear stop
+	exit $?
+}
+
 if ! [ "$(ls -A /etc/homegear)" ]; then
-	cp -R /etc/homegear.config/* /etc/homegear/
+	cp -a /etc/homegear.config/* /etc/homegear/
 fi
 
 if ! [ "$(ls -A /var/lib/homegear)" ]; then
@@ -29,6 +35,10 @@ if ! [ -f /etc/homegear/dh1024.pem ]; then
 	chmod 400 /etc/homegear/dh1024.pem
 fi
 
+trap _term SIGTERM
+
 service homegear start
 service homegear-influxdb start
-tail -f /var/log/homegear/homegear.log
+tail -f /var/log/homegear/homegear.log &
+child=$!
+wait "$child"

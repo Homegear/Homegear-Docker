@@ -17,6 +17,6 @@ VOLUME ["/etc/homegear", "/var/lib/homegear", "/var/log/homegear"]
 
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
-CMD /start.sh
+ENTRYPOINT ["/bin/bash", "-c", "/start.sh"]
 
 EXPOSE 2001 2002 2003
