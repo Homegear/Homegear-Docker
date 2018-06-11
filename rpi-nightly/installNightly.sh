@@ -7,7 +7,7 @@ fi
 SCRIPTDIR="$( cd "$(dirname $0)" && pwd )"
 
 apt-get update
-system="raspbian_stretch"
+system="debian_stretch"
 arch="armhf"
 
 function downloadModule {

@@ -1,10 +1,11 @@
-FROM resin/rpi-raspbian:stretch
+FROM arm32v7/debian:stretch
 MAINTAINER Sathya Laufer <sathya@homegear.email>
+COPY qemu-arm-static /usr/bin/qemu-arm-static
 RUN apt-get update && apt-get -y install apt-transport-https wget ca-certificates apt-utils gnupg libzip4 libavahi-client3 libavahi-client-dev insserv
 RUN \
     touch /tmp/HOMEGEAR_STATIC_INSTALLATION; \
     wget https://apt.homegear.eu/Release.key && apt-key add Release.key && rm Release.key; \
-    echo 'deb https://homegear.eu/packages/Raspbian/ stretch/' >> /etc/apt/sources.list.d/homegear.list; \
+    echo 'deb https://apt.homegear.eu/Debian/ stretch/' >> /etc/apt/sources.list.d/homegear.list; \
     apt-get update && apt-get -y install homegear homegear-nodes-core homegear-nodes-extra homegear-homematicbidcos homegear-homematicwired homegear-insteon homegear-max homegear-philipshue homegear-sonos homegear-kodi homegear-ipcam homegear-beckhoff homegear-knx homegear-enocean homegear-intertechno homegear-zwave homegear-mbus homegear-ccu2 homegear-influxdb; \
     rm -f /etc/homegear/dh1024.pem; \
     rm -f /etc/homegear/homegear.crt; \
