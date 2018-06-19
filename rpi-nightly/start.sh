@@ -6,6 +6,19 @@ _term() {
         exit $?
 }
 
+trap _term SIGTERM
+
+USER=homegear
+
+USER_ID=$(id -u $USER)
+USER_GID=$(id -g $USER)
+
+USER_ID=${HOST_USER_ID:=$USER_ID}
+USER_GID=${HOST_USER_GID:=$USER_GID}
+
+sed -i -e "s/^${USER}:\([^:]*\):[0-9]*:[0-9]*/${USER}:\1:${USER_ID}:${USER_GID}/"  /etc/passwd
+sed -i -e "s/^${USER}:\([^:]*\):[0-9]*/${USER}:\1:${USER_GID}/" /etc/group
+
 if ! [ "$(ls -A /etc/homegear)" ]; then
 	cp -R /etc/homegear.config/* /etc/homegear/
 fi
@@ -28,16 +41,15 @@ if ! [ -f /etc/homegear/dh1024.pem ]; then
 	openssl req -batch -new -key /etc/homegear/homegear.key -out /etc/homegear/homegear.csr
 	openssl x509 -req -in /etc/homegear/homegear.csr -signkey /etc/homegear/homegear.key -out /etc/homegear/homegear.crt
 	rm /etc/homegear/homegear.csr
-	chown homegear:homegear /etc/homegear/homegear.key
 	chmod 400 /etc/homegear/homegear.key
 	openssl dhparam -check -text -5 -out /etc/homegear/dh1024.pem 1024
-	chown homegear:homegear /etc/homegear/dh1024.pem
 	chmod 400 /etc/homegear/dh1024.pem
 fi
 
-trap _term SIGTERM
+chown -R homegear:homegear /etc/homegear /var/log/homegear /var/lib/homegear
 
 service homegear start
+service homegear-management start
 service homegear-influxdb start
 tail -f /var/log/homegear/homegear.log &
 child=$!
