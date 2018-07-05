@@ -48,6 +48,8 @@ fi
 
 chown -R homegear:homegear /etc/homegear /var/log/homegear /var/lib/homegear
 
+ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 service homegear start
 service homegear-management start
 service homegear-influxdb start
