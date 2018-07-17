@@ -20,7 +20,7 @@ sed -i -e "s/^${USER}:\([^:]*\):[0-9]*:[0-9]*/${USER}:\1:${USER_ID}:${USER_GID}/
 sed -i -e "s/^${USER}:\([^:]*\):[0-9]*/${USER}:\1:${USER_GID}/" /etc/group
 
 if ! [ "$(ls -A /etc/homegear)" ]; then
-	cp -R /etc/homegear.config/* /etc/homegear/
+	cp -a /etc/homegear.config/* /etc/homegear/
 fi
 
 if ! [ "$(ls -A /var/lib/homegear)" ]; then
@@ -46,7 +46,13 @@ if ! [ -f /etc/homegear/dh1024.pem ]; then
 	chmod 400 /etc/homegear/dh1024.pem
 fi
 
-chown -R homegear:homegear /etc/homegear /var/log/homegear /var/lib/homegear
+chown -R root:root /etc/homegear
+find /etc/homegear -type d -exec chmod 755 {} \;
+chown -R homegear:homegear /var/log/homegear /var/lib/homegear
+find /var/log/homegear -type d -exec chmod 750 {} \;
+find /var/log/homegear -type f -exec chmod 640 {} \;
+find /var/lib/homegear -type d -exec chmod 750 {} \;
+find /var/lib/homegear -type f -exec chmod 640 {} \;
 
 ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
