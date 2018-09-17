@@ -57,6 +57,9 @@ downloadModule homegear-easycam_current_${system}_${arch}.deb
 downloadModule homegear-easyled_current_${system}_${arch}.deb
 downloadModule homegear-easyled2_current_${system}_${arch}.deb
 downloadModule homegear-influxdb_current_${system}_${arch}.deb
+downloadModule homegear-management_current_${system}_${arch}.deb
+downloadModule homegear-webssh_current_${system}_${arch}.deb
+downloadModule homegear-adminui_current_${system}_${arch}.deb
 
 dpkg -i libhomegear-base_current_${system}_${arch}.deb
 if [ $? -ne 0 ]; then
@@ -131,6 +134,9 @@ installModule homegear-easycam_current_${system}_${arch}.deb
 installModule homegear-easyled_current_${system}_${arch}.deb
 installModule homegear-easyled2_current_${system}_${arch}.deb
 installModule homegear-influxdb_current_${system}_${arch}.deb
+installModule homegear-management_current_${system}_${arch}.deb
+installModule homegear-webssh_current_${system}_${arch}.deb
+installModule homegear-adminui_current_${system}_${arch}.deb
 
 rm -f /etc/homegear/dh1024.pem
 rm -f /etc/homegear/homegear.key
