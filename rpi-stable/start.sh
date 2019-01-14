@@ -18,8 +18,15 @@ USER_GID=$(id -g $USER)
 USER_ID=${HOST_USER_ID:=$USER_ID}
 USER_GID=${HOST_USER_GID:=$USER_GID}
 
-sed -i -e "s/^${USER}:\([^:]*\):[0-9]*:[0-9]*/${USER}:\1:${USER_ID}:${USER_GID}/"  /etc/passwd
-sed -i -e "s/^${USER}:\([^:]*\):[0-9]*/${USER}:\1:${USER_GID}/" /etc/group
+if [ $USER_ID -eq 0 ]; then
+	sed -i "s/RUNASUSER=homegear/RUNASUSER=root/g" /etc/init.d/homegear
+	sed -i "s/RUNASGROUP=homegear/RUNASGROUP=root/g" /etc/init.d/homegear
+	sed -i "s/RUNASUSER=homegear/RUNASUSER=root/g" /etc/init.d/homegear-influxdb
+	sed -i "s/RUNASGROUP=homegear/RUNASGROUP=root/g" /etc/init.d/homegear-influxdb
+else
+	sed -i -e "s/^${USER}:\([^:]*\):[0-9]*:[0-9]*/${USER}:\1:${USER_ID}:${USER_GID}/" /etc/passwd
+	sed -i -e "s/^${USER}:\([^:]*\):[0-9]*/${USER}:\1:${USER_GID}/" /etc/group
+fi
 
 if ! [ "$(ls -A /etc/homegear)" ]; then
 	cp -a /etc/homegear.config/* /etc/homegear/
