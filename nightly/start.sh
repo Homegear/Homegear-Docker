@@ -2,6 +2,8 @@
 
 _term() {
 	service homegear-influxdb stop
+	service homegear-management stop
+	service homegear-webssh stop
 	service homegear stop
 	exit $?
 }
@@ -58,6 +60,7 @@ ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 service homegear start
 service homegear-management start
+service homegear-webssh start
 service homegear-influxdb start
 tail -f /var/log/homegear/homegear.log &
 child=$!
