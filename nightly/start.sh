@@ -62,6 +62,7 @@ find /var/log/homegear -type d -exec chmod 750 {} \;
 find /var/log/homegear -type f -exec chmod 640 {} \;
 find /var/lib/homegear -type d -exec chmod 750 {} \;
 find /var/lib/homegear -type f -exec chmod 640 {} \;
+find /var/lib/homegear/scripts -type f -exec chmod 550 {} \;
 
 ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
