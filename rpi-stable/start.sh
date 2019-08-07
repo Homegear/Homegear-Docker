@@ -10,6 +10,11 @@ _term() {
 
 trap _term SIGTERM
 
+if [ $GET_VERSION -eq 1 ]; then
+	homegear -v
+	exit $?
+fi
+
 USER=homegear
 
 USER_ID=$(id -u $USER)
