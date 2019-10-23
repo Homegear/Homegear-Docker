@@ -45,6 +45,7 @@ else
 	cp -a /var/lib/homegear.data/modules/* /var/lib/homegear/modules/
 	cp -a /var/lib/homegear.data/node-blue/nodes/* /var/lib/homegear/node-blue/nodes/
 fi
+rm -f /var/lib/homegear/homegear_updated
 
 if ! [ -f /var/log/homegear/homegear.log ]; then
 	touch /var/log/homegear/homegear.log
