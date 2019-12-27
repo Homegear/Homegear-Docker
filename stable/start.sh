@@ -69,6 +69,7 @@ if ! [ -f /etc/homegear/dh1024.pem ]; then
 fi
 
 chown -R root:root /etc/homegear
+chown ${USER}:${USER} /etc/homegear/*.key
 find /etc/homegear -type d -exec chmod 755 {} \;
 chown -R ${USER}:${USER} /var/log/homegear /var/lib/homegear
 find /var/log/homegear -type d -exec chmod 750 {} \;
