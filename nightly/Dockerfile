@@ -1,11 +1,11 @@
-FROM debian:stretch-slim
-MAINTAINER Sathya Laufer <sathya@homegear.email>
+FROM debian:buster-slim
+MAINTAINER Dr. Sathya Laufer <sathya@homegear.email>
 RUN apt-get update && apt-get -y install apt-transport-https apt-utils wget ca-certificates gnupg libzip4 libavahi-client3 libavahi-client-dev insserv
 COPY installNightly.sh /installNightly.sh
 RUN \
     touch /tmp/HOMEGEAR_STATIC_INSTALLATION; \
-    wget https://homegear.eu/packages/Release.key && apt-key add Release.key && rm Release.key; \
-    echo 'deb https://homegear.eu/packages/Debian/ stretch/' >> /etc/apt/sources.list.d/homegear.list; \
+    wget https://apt.homegear.eu/Release.key && apt-key add Release.key && rm Release.key; \
+    echo 'deb https://apt.homegear.eu/Debian/ buster/' >> /etc/apt/sources.list.d/homegear.list; \
     chmod +x /installNightly.sh; \
     /installNightly.sh; \
     cp -R /etc/homegear /etc/homegear.config; \

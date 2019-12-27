@@ -7,8 +7,20 @@ fi
 SCRIPTDIR="$( cd "$(dirname $0)" && pwd )"
 
 apt-get update
-system="debian_stretch"
-arch="amd64"
+system="debian_buster"
+machine=$(uname -m)
+echo "Machine: $machine"
+if [[ $machine == "x86_64" ]]; then
+	arch="amd64"
+elif [[ $machine == "aarch64" ]]; then
+	arch="arm64"
+elif [[ $machine == "armv7l" ]]; then
+	arch="armhf"
+else
+	echo "Unknown architecture"
+	exit 1
+fi
+echo "Architecture: $arch"
 
 function downloadModule {
 	wget https://homegear.eu/downloads/nightlies/${1} || exit 1
@@ -52,6 +64,7 @@ downloadModule homegear-intertechno_current_${system}_${arch}.deb
 downloadModule homegear-rs2w_current_${system}_${arch}.deb
 downloadModule homegear-rsl_current_${system}_${arch}.deb
 downloadModule homegear-zwave_current_${system}_${arch}.deb
+downloadModule homegear-zigbee_current_${system}_${arch}.deb
 downloadModule homegear-mbus_current_${system}_${arch}.deb
 downloadModule homegear-ccu_current_${system}_${arch}.deb
 downloadModule homegear-easycam_current_${system}_${arch}.deb
@@ -61,6 +74,7 @@ downloadModule homegear-influxdb_current_${system}_${arch}.deb
 downloadModule homegear-management_current_${system}_${arch}.deb
 downloadModule homegear-webssh_current_${system}_${arch}.deb
 downloadModule homegear-adminui_current_${system}_${arch}.deb
+downloadModule homegear-ui_current_${system}_${arch}.deb
 
 dpkg -i libhomegear-base_current_${system}_${arch}.deb
 if [ $? -ne 0 ]; then
@@ -135,6 +149,7 @@ installModule homegear-intertechno_current_${system}_${arch}.deb
 installModule homegear-rs2w_current_${system}_${arch}.deb
 installModule homegear-rsl_current_${system}_${arch}.deb
 installModule homegear-zwave_current_${system}_${arch}.deb
+installModule homegear-zigbee_current_${system}_${arch}.deb
 installModule homegear-mbus_current_${system}_${arch}.deb
 installModule homegear-ccu_current_${system}_${arch}.deb
 installModule homegear-easycam_current_${system}_${arch}.deb
@@ -144,6 +159,7 @@ installModule homegear-influxdb_current_${system}_${arch}.deb
 installModule homegear-management_current_${system}_${arch}.deb
 installModule homegear-webssh_current_${system}_${arch}.deb
 installModule homegear-adminui_current_${system}_${arch}.deb
+installModule homegear-ui_current_${system}_${arch}.deb
 
 rm -f /etc/homegear/dh1024.pem
 rm -f /etc/homegear/homegear.key

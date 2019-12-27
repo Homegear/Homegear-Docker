@@ -1,3 +1,2 @@
 #/bin/sh
-docker pull debian:stretch-slim
-docker build --no-cache -t homegear/homegear:nightly .
+docker buildx build --no-cache --platform linux/amd64,linux/arm64,linux/arm/v7 --tag homegear/homegear:nightly --push .

@@ -1,11 +1,14 @@
 #/bin/bash
 
 _term() {
-	service homegear-influxdb stop
-	service homegear-management stop
-	service homegear-webssh stop
-	service homegear stop
-	exit $?
+	HOMEGEAR_PID=$(cat /var/run/homegear/homegear.pid)
+	kill $(cat /var/run/homegear/homegear-management.pid)
+	kill $(cat /var/run/homegear/homegear-webssh.pid)
+	kill $(cat /var/run/homegear/homegear-influxdb.pid)
+	kill $HOMEGEAR_PID
+	wait "$HOMEGEAR_PID"
+	/etc/homegear/homegear-stop.sh
+	exit 0
 }
 
 trap _term SIGTERM
@@ -18,12 +21,7 @@ USER_GID=$(id -g $USER)
 USER_ID=${HOST_USER_ID:=$USER_ID}
 USER_GID=${HOST_USER_GID:=$USER_GID}
 
-if [ $USER_ID -eq 0 ]; then
-	sed -i "s/RUNASUSER=homegear/RUNASUSER=root/g" /etc/init.d/homegear
-	sed -i "s/RUNASGROUP=homegear/RUNASGROUP=root/g" /etc/init.d/homegear
-	sed -i "s/RUNASUSER=homegear/RUNASUSER=root/g" /etc/init.d/homegear-influxdb
-	sed -i "s/RUNASGROUP=homegear/RUNASGROUP=root/g" /etc/init.d/homegear-influxdb
-else
+if [ $USER_ID -ne 0 ]; then
 	sed -i -e "s/^${USER}:\([^:]*\):[0-9]*:[0-9]*/${USER}:\1:${USER_ID}:${USER_GID}/" /etc/passwd
 	sed -i -e "s/^${USER}:\([^:]*\):[0-9]*/${USER}:\1:${USER_GID}/" /etc/group
 fi
@@ -37,13 +35,22 @@ if ! [ "$(ls -A /var/lib/homegear)" ]; then
 else
 	rm -Rf /var/lib/homegear/modules/*
 	rm -Rf /var/lib/homegear/flows/nodes/*
+	mkdir -p /var/lib/homegear.data/modules
 	cp -a /var/lib/homegear.data/modules/* /var/lib/homegear/modules/
+	[ $? -ne 0 ] && echo "Could not copy modules to \"homegear.data/modules/\". Please check the permissions on this directory and make sure it is writeable."
+	mkdir -p /var/lib/homegear.data/node-blue/nodes
 	cp -a /var/lib/homegear.data/node-blue/nodes/* /var/lib/homegear/node-blue/nodes/
+	[ $? -ne 0 ] && echo "Could not copy nodes to \"homegear.data/node-blue/nodes\". Please check the permissions on this directory and make sure it is writeable."
 fi
 rm -f /var/lib/homegear/homegear_updated
 
 if ! [ -f /var/log/homegear/homegear.log ]; then
 	touch /var/log/homegear/homegear.log
+	touch /var/log/homegear/homegear-webssh.log
+	touch /var/log/homegear/homegear-flows.log
+	touch /var/log/homegear/homegear-scriptengine.log
+	touch /var/log/homegear/homegear-management.log
+	touch /var/log/homegear/homegear-influxdb.log
 fi
 
 if ! [ -f /etc/homegear/dh1024.pem ]; then
@@ -58,7 +65,7 @@ fi
 
 chown -R root:root /etc/homegear
 find /etc/homegear -type d -exec chmod 755 {} \;
-chown -R homegear:homegear /var/log/homegear /var/lib/homegear
+chown -R ${USER}:${USER} /var/log/homegear /var/lib/homegear
 find /var/log/homegear -type d -exec chmod 750 {} \;
 find /var/log/homegear -type f -exec chmod 640 {} \;
 find /var/lib/homegear -type d -exec chmod 750 {} \;
@@ -67,10 +74,20 @@ find /var/lib/homegear/scripts -type f -exec chmod 550 {} \;
 
 ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-service homegear start
-service homegear-management start
-service homegear-webssh start
-service homegear-influxdb start
+mkdir -p /var/run/homegear
+chown ${USER}:${USER} /var/run/homegear
+
+/etc/homegear/homegear-start.sh
+/usr/bin/homegear -u ${USER} -g ${USER} -p /var/run/homegear/homegear.pid &
+sleep 5
+/usr/bin/homegear-management -u ${USER} -g ${USER} -p /var/run/homegear/homegear-management.pid &
+/usr/bin/homegear-webssh -u ${USER} -g ${USER} -p /var/run/homegear/homegear-webssh.pid &
+/usr/bin/homegear-influxdb -u ${USER} -g ${USER} -p /var/run/homegear/homegear-influxdb.pid &
+tail -f /var/log/homegear/homegear-webssh.log &
+tail -f /var/log/homegear/homegear-flows.log &
+tail -f /var/log/homegear/homegear-scriptengine.log &
+tail -f /var/log/homegear/homegear-management.log &
+tail -f /var/log/homegear/homegear-influxdb.log &
 tail -f /var/log/homegear/homegear.log &
 child=$!
 wait "$child"
