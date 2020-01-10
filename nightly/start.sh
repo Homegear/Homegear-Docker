@@ -13,7 +13,7 @@ _term() {
 
 trap _term SIGTERM
 
-if [ $GET_VERSION -eq 1 ]; then
+if [[ $GET_VERSION -eq 1 ]]; then
 	homegear -v
 	exit $?
 fi
@@ -70,6 +70,7 @@ fi
 
 chown -R root:root /etc/homegear
 chown ${USER}:${USER} /etc/homegear/*.key
+chown ${USER}:${USER} /etc/homegear/ca/private/*.key
 find /etc/homegear -type d -exec chmod 755 {} \;
 chown -R ${USER}:${USER} /var/log/homegear /var/lib/homegear
 find /var/log/homegear -type d -exec chmod 750 {} \;
