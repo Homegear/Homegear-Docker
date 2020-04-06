@@ -39,13 +39,20 @@ if ! [ "$(ls -A /var/lib/homegear)" ]; then
 	cp -a /var/lib/homegear.data/* /var/lib/homegear/
 else
 	rm -Rf /var/lib/homegear/modules/*
-	rm -Rf /var/lib/homegear/flows/nodes/*
 	mkdir -p /var/lib/homegear.data/modules
 	cp -a /var/lib/homegear.data/modules/* /var/lib/homegear/modules/
 	[ $? -ne 0 ] && echo "Could not copy modules to \"homegear.data/modules/\". Please check the permissions on this directory and make sure it is writeable."
+
+	rm -Rf /var/lib/homegear/flows/nodes/*
 	mkdir -p /var/lib/homegear.data/node-blue/nodes
 	cp -a /var/lib/homegear.data/node-blue/nodes/* /var/lib/homegear/node-blue/nodes/
 	[ $? -ne 0 ] && echo "Could not copy nodes to \"homegear.data/node-blue/nodes\". Please check the permissions on this directory and make sure it is writeable."
+
+	rm -Rf /var/lib/homegear/admin-ui/public/*
+	mkdir -p /var/lib/homegear/admin-ui/public
+	mkdir -p /var/lib/homegear.data/admin-ui/public
+	cp -a /var/lib/homegear.data/admin-ui/public/* /var/lib/homegear/admin-ui/public/
+	[ $? -ne 0 ] && echo "Could not copy admin UI to \"homegear.data/admin-ui/public\". Please check the permissions on this directory and make sure it is writeable."
 fi
 rm -f /var/lib/homegear/homegear_updated
 
