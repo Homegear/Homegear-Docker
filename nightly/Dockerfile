@@ -10,8 +10,8 @@ RUN \
     chmod +x /installNightly.sh; \
     /installNightly.sh; \
     rm /installNightly.sh; \
-    cp -R /etc/homegear /etc/homegear.config; \
-    cp -R /var/lib/homegear /var/lib/homegear.data; \
+    cp -a /etc/homegear /etc/homegear.config; \
+    cp -a /var/lib/homegear /var/lib/homegear.data; \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 VOLUME ["/etc/homegear", "/var/lib/homegear", "/var/log/homegear"]
