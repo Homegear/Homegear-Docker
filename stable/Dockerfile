@@ -1,6 +1,6 @@
 FROM debian:buster-slim
 MAINTAINER Dr. Sathya Laufer <s.laufer@homegear.email>
-RUN apt-get update && apt-get -y install apt-transport-https wget ca-certificates apt-utils gnupg libzip4 libavahi-client3 libavahi-client-dev insserv locales
+RUN apt-get update && apt-get -y install apt-transport-https wget ca-certificates apt-utils gnupg libzip4 libavahi-client3 libavahi-client-dev insserv locales lsb-release
 RUN \
     touch /tmp/HOMEGEAR_STATIC_INSTALLATION; \
     touch /.dockerenv; \

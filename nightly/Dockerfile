@@ -1,6 +1,6 @@
 FROM debian:buster-slim
 MAINTAINER Dr. Sathya Laufer <sathya@homegear.email>
-RUN apt-get update && apt-get -y install apt-transport-https apt-utils wget ca-certificates gnupg libzip4 libavahi-client3 libavahi-client-dev insserv locales
+RUN apt-get update && apt-get -y install apt-transport-https apt-utils wget ca-certificates gnupg libzip4 libavahi-client3 libavahi-client-dev insserv locales lsb-release
 COPY installNightly.sh /installNightly.sh
 RUN \
     touch /tmp/HOMEGEAR_STATIC_INSTALLATION; \
