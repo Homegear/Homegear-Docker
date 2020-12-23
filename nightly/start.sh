@@ -35,6 +35,11 @@ if ! [ "$(ls -A /etc/homegear)" ]; then
 	cp -a /etc/homegear.config/* /etc/homegear/
 fi
 
+if test ! -e /etc/homegear/nodeBlueCredentialKey.txt; then
+	tr -dc A-Za-z0-9 < /dev/urandom | head -c 43 > /etc/homegear/nodeBlueCredentialKey.txt
+	chmod 400 /etc/homegear/nodeBlueCredentialKey.txt
+fi
+
 if ! [ "$(ls -A /var/lib/homegear)" ]; then
 	cp -a /var/lib/homegear.data/* /var/lib/homegear/
 else
@@ -79,6 +84,7 @@ fi
 chown -R root:root /etc/homegear
 chown ${USER}:${USER} /etc/homegear/*.key
 chown ${USER}:${USER} /etc/homegear/*.pem
+chown ${USER}:${USER} /etc/homegear/nodeBlueCredentialKey.txt
 chown ${USER}:${USER} /etc/homegear/ca/private/*.key
 find /etc/homegear -type d -exec chmod 755 {} \;
 chown -R ${USER}:${USER} /var/log/homegear /var/lib/homegear
