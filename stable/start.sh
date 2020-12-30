@@ -99,6 +99,7 @@ find /var/lib/homegear -type d -exec chmod 750 {} \;
 find /var/lib/homegear -type f -exec chmod 640 {} \;
 find /var/lib/homegear/scripts -type f -exec chmod 550 {} \;
 
+TZ=$(echo $TZ | tr -d '"') # Some users report quotes around the string - remove them
 if [[ -n $TZ ]]; then
 	ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 fi
