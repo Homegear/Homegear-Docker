@@ -52,6 +52,9 @@ else
 	mkdir -p /var/lib/homegear.data/node-blue/nodes
 	cp -a /var/lib/homegear.data/node-blue/nodes/* /var/lib/homegear/node-blue/nodes/
 	[ $? -ne 0 ] && echo "Could not copy nodes to \"homegear.data/node-blue/nodes\". Please check the permissions on this directory and make sure it is writeable."
+	rm -Rf /var/lib/homegear/node-blue/node-red
+	cp -a /var/lib/homegear.data/node-blue/node-red /var/lib/homegear/node-blue/
+	[ $? -ne 0 ] && echo "Could not copy nodes to \"homegear.data/node-blue/node-red\". Please check the permissions on this directory and make sure it is writeable."
 
 	cd /var/lib/homegear/admin-ui; ls /var/lib/homegear/admin-ui/ | grep -v translations | xargs rm -Rf
 	mkdir -p /var/lib/homegear.data/admin-ui
@@ -59,6 +62,8 @@ else
 	[ ! -f /var/lib/homegear/admin-ui/.env ] && cp -a /var/lib/homegear.data/admin-ui/.env /var/lib/homegear/admin-ui/
 	cp -a /var/lib/homegear.data/admin-ui/.version /var/lib/homegear/admin-ui/
 	[ $? -ne 0 ] && echo "Could not copy admin UI to \"homegear.data/admin-ui\". Please check the permissions on this directory and make sure it is writeable."
+
+	rm -Rf /var/lib/homegear/
 fi
 rm -f /var/lib/homegear/homegear_updated
 
@@ -94,7 +99,9 @@ find /var/lib/homegear -type d -exec chmod 750 {} \;
 find /var/lib/homegear -type f -exec chmod 640 {} \;
 find /var/lib/homegear/scripts -type f -exec chmod 550 {} \;
 
-ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+if [[ -n $TZ ]]; then
+	ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+fi
 
 mkdir -p /var/run/homegear
 chown ${USER}:${USER} /var/run/homegear
