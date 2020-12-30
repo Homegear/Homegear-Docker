@@ -62,10 +62,13 @@ else
 	[ ! -f /var/lib/homegear/admin-ui/.env ] && cp -a /var/lib/homegear.data/admin-ui/.env /var/lib/homegear/admin-ui/
 	cp -a /var/lib/homegear.data/admin-ui/.version /var/lib/homegear/admin-ui/
 	[ $? -ne 0 ] && echo "Could not copy admin UI to \"homegear.data/admin-ui\". Please check the permissions on this directory and make sure it is writeable."
-
-	rm -Rf /var/lib/homegear/
 fi
 rm -f /var/lib/homegear/homegear_updated
+
+if [[ -d /var/lib/homegear/node-blue/node-red ]]; then
+	cd /var/lib/homegear/node-blue/node-red
+	npm install
+fi
 
 if ! [ -f /var/log/homegear/homegear.log ]; then
 	touch /var/log/homegear/homegear.log

@@ -65,6 +65,11 @@ else
 fi
 rm -f /var/lib/homegear/homegear_updated
 
+if [[ -d /var/lib/homegear/node-blue/node-red ]]; then
+	cd /var/lib/homegear/node-blue/node-red
+	npm install
+fi
+
 if ! [ -f /var/log/homegear/homegear.log ]; then
 	touch /var/log/homegear/homegear.log
 	touch /var/log/homegear/homegear-webssh.log

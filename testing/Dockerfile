@@ -26,4 +26,4 @@ COPY start.sh /start.sh
 RUN chmod +x /start.sh
 ENTRYPOINT ["/bin/bash", "-c", "/start.sh"]
 
-EXPOSE 2001 2002 2003
+EXPOSE 80 443 2001 2002 2003
