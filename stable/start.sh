@@ -33,6 +33,8 @@ fi
 
 if ! [ "$(ls -A /etc/homegear)" ]; then
 	cp -a /etc/homegear.config/* /etc/homegear/
+else
+	cp -a /etc/homegear.config/devices/* /etc/homegear/devices/
 fi
 
 if test ! -e /etc/homegear/nodeBlueCredentialKey.txt; then
