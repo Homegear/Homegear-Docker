@@ -45,6 +45,7 @@ wget https://homegear.eu/downloads/nightlies/libhomegear-ipc_current_${system}_$
 wget https://homegear.eu/downloads/nightlies/python3-homegear_current_${system}_${arch}.deb || exit 1
 wget https://homegear.eu/downloads/nightlies/homegear_current_${system}_${arch}.deb || exit 1
 wget https://homegear.eu/downloads/nightlies/homegear-nodes-core_current_${system}_${arch}.deb || exit 1
+wget https://homegear.eu/downloads/nightlies/homegear-nodes-ui_current_${system}_${arch}.deb || exit 1
 wget https://homegear.eu/downloads/nightlies/homegear-nodes-extra_current_${system}_${arch}.deb || exit 1
 wget https://homegear.eu/downloads/nightlies/homegear-licensing_current_${system}_${arch}.deb || exit 1
 wget https://homegear.eu/downloads/nightlies/homegear-easy-licensing_current_${system}_${arch}.deb || exit 1
@@ -114,6 +115,12 @@ dpkg -i homegear-nodes-core_current_${system}_${arch}.deb
 if [ $? -ne 0 ]; then
 	apt-get -y -f install || exit 1
 	dpkg -i homegear-nodes-core_current_${system}_${arch}.deb || exit 1
+fi
+
+dpkg -i homegear-nodes-ui_current_${system}_${arch}.deb
+if [ $? -ne 0 ]; then
+	apt-get -y -f install || exit 1
+	dpkg -i homegear-nodes-ui_current_${system}_${arch}.deb || exit 1
 fi
 
 dpkg -i homegear-nodes-extra_current_${system}_${arch}.deb
