@@ -8,7 +8,7 @@ RUN \
     sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen; \
     locale-gen; \
     wget https://apt.homegear.eu/Release.key && apt-key add Release.key && rm Release.key; \
-    echo 'deb https://apt.homegear.eu/Debian/ buster/' >> /etc/apt/sources.list.d/homegear.list; \
+    echo 'deb https://apt.homegear.eu/debian/buster/homegear/stable/ buster main' >> /etc/apt/sources.list.d/homegear.list; \
     chmod +x /installNightly.sh; \
     /installNightly.sh; \
     rm /installNightly.sh; \
