@@ -34,12 +34,12 @@ fi
 if ! [ "$(ls -A /etc/homegear)" ]; then
 	cp -a /etc/homegear.config/* /etc/homegear/
 else
-        cp -a /etc/homegear.config/devices/* /etc/homegear/devices/
+	cp -a /etc/homegear.config/devices/* /etc/homegear/devices/
 fi
 
 if test ! -e /etc/homegear/nodeBlueCredentialKey.txt; then
-	tr -dc A-Za-z0-9 < /dev/urandom | head -c 43 > /etc/homegear/nodeBlueCredentialKey.txt
-	chmod 400 /etc/homegear/nodeBlueCredentialKey.txt
+        tr -dc A-Za-z0-9 < /dev/urandom | head -c 43 > /etc/homegear/nodeBlueCredentialKey.txt
+        chmod 400 /etc/homegear/nodeBlueCredentialKey.txt
 fi
 
 if ! [ "$(ls -A /var/lib/homegear)" ]; then
@@ -58,9 +58,9 @@ else
 	cp -a /var/lib/homegear.data/node-blue/node-red /var/lib/homegear/node-blue/
 	[ $? -ne 0 ] && echo "Could not copy nodes to \"homegear.data/node-blue/node-red\". Please check the permissions on this directory and make sure it is writeable."
 
-        rm -Rf /var/lib/homegear/node-blue/www
-        cp -a /var/lib/homegear.data/node-blue/www /var/lib/homegear/node-blue/
-        [ $? -ne 0 ] && echo "Could not copy Node-BLUE frontend to \"homegear.data/node-blue/www\". Please check the permissions on this directory and make sure it is writeable."
+	rm -Rf /var/lib/homegear/node-blue/www
+	cp -a /var/lib/homegear.data/node-blue/www /var/lib/homegear/node-blue/
+	[ $? -ne 0 ] && echo "Could not copy Node-BLUE frontend to \"homegear.data/node-blue/www\". Please check the permissions on this directory and make sure it is writeable."
 
 	cd /var/lib/homegear/admin-ui; ls /var/lib/homegear/admin-ui/ | grep -v translations | xargs rm -Rf
 	mkdir -p /var/lib/homegear.data/admin-ui
@@ -70,11 +70,6 @@ else
 	[ $? -ne 0 ] && echo "Could not copy admin UI to \"homegear.data/admin-ui\". Please check the permissions on this directory and make sure it is writeable."
 fi
 rm -f /var/lib/homegear/homegear_updated
-
-if [[ -d /var/lib/homegear/node-blue/node-red ]]; then
-	cd /var/lib/homegear/node-blue/node-red
-	npm install
-fi
 
 if ! [ -f /var/log/homegear/homegear.log ]; then
 	touch /var/log/homegear/homegear.log
@@ -96,10 +91,10 @@ if ! [ -f /etc/homegear/dh1024.pem ]; then
 fi
 
 chown -R root:root /etc/homegear
-chown ${USER}:${USER} /etc/homegear/*.key > /dev/null 2>&1
-chown ${USER}:${USER} /etc/homegear/*.pem > /dev/null 2>&1
-chown ${USER}:${USER} /etc/homegear/nodeBlueCredentialKey.txt > /dev/null 2>&1
-chown ${USER}:${USER} /etc/homegear/ca/private/*.key > /dev/null 2>&1
+chown ${USER}:${USER} /etc/homegear/*.key
+chown ${USER}:${USER} /etc/homegear/*.pem
+chown ${USER}:${USER} /etc/homegear/nodeBlueCredentialKey.txt
+chown ${USER}:${USER} /etc/homegear/ca/private/*.key
 find /etc/homegear -type d -exec chmod 755 {} \;
 chown -R ${USER}:${USER} /var/log/homegear /var/lib/homegear
 find /var/log/homegear -type d -exec chmod 750 {} \;
