@@ -62,7 +62,8 @@ else
 	cp -a /var/lib/homegear.data/node-blue/www /var/lib/homegear/node-blue/
 	[ $? -ne 0 ] && echo "Could not copy Node-BLUE frontend to \"homegear.data/node-blue/www\". Please check the permissions on this directory and make sure it is writeable."
 
-	cd /var/lib/homegear/admin-ui; ls /var/lib/homegear/admin-ui/ | grep -v translations | xargs rm -Rf
+	#cd /var/lib/homegear/admin-ui; ls /var/lib/homegear/admin-ui/ | grep -v translations | xargs rm -Rf
+	rm -Rf /var/lib/homegear/admin-ui/*
 	mkdir -p /var/lib/homegear.data/admin-ui
 	cp -a /var/lib/homegear.data/admin-ui/* /var/lib/homegear/admin-ui/
 	[ ! -f /var/lib/homegear/admin-ui/.env ] && cp -a /var/lib/homegear.data/admin-ui/.env /var/lib/homegear/admin-ui/
