@@ -7,7 +7,7 @@ RUN \
     sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen; \
     locale-gen; \
     wget https://apt.homegear.eu/Release.key && apt-key add Release.key && rm Release.key; \
-    echo 'https://apt.homegear.eu/debian/homegear/stable/ bullseye main' >> /etc/apt/sources.list.d/homegear.list; \
+    echo 'deb https://apt.homegear.eu/debian/bullseye/homegear/stable/ bullseye main' >> /etc/apt/sources.list.d/homegear.list; \
     apt-get update && apt-get -y install libhomegear-node homegear homegear-management homegear-webssh homegear-adminui homegear-ui homegear-nodes-core homegear-nodes-extra homegear-homematicbidcos homegear-homematicwired homegear-insteon homegear-max homegear-philipshue homegear-sonos homegear-kodi homegear-ipcam homegear-beckhoff homegear-knx homegear-enocean homegear-intertechno homegear-rsl homegear-rs2w homegear-mbus homegear-zwave homegear-zigbee homegear-ccu homegear-easyled homegear-easyled2 homegear-easycam homegear-influxdb; \
     rm -f /etc/homegear/dh1024.pem; \
     rm -f /etc/homegear/homegear.crt; \
