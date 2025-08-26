@@ -1,5 +1,4 @@
 FROM debian:trixie-slim
-MAINTAINER Dr. Sathya Laufer <s.laufer@homegear.email>
 RUN apt-get update && apt-get -y install apt-transport-https wget ca-certificates apt-utils gnupg libavahi-client3 libavahi-client-dev locales lsb-release
 RUN \
     touch /tmp/HOMEGEAR_STATIC_INSTALLATION; \
@@ -16,9 +15,9 @@ RUN \
     cp -a /var/lib/homegear /var/lib/homegear.data; \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
 
 VOLUME ["/etc/homegear", "/var/lib/homegear", "/var/log/homegear"]
 
