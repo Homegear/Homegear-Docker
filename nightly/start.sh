@@ -87,14 +87,12 @@ if ! [ -f /var/log/homegear/homegear.log ]; then
 	touch /var/log/homegear/homegear-influxdb.log
 fi
 
-if ! [ -f /etc/homegear/dh1024.pem ]; then
-	openssl genrsa -out /etc/homegear/homegear.key 2048
+if ! [ -f /etc/homegear/homegear.crt ]; then
+	openssl genrsa -out /etc/homegear/homegear.key 4096
 	openssl req -batch -new -key /etc/homegear/homegear.key -out /etc/homegear/homegear.csr
 	openssl x509 -req -in /etc/homegear/homegear.csr -signkey /etc/homegear/homegear.key -out /etc/homegear/homegear.crt
 	rm /etc/homegear/homegear.csr
 	chmod 400 /etc/homegear/homegear.key
-	openssl dhparam -check -text -5 -out /etc/homegear/dh1024.pem 1024
-	chmod 400 /etc/homegear/dh1024.pem
 fi
 
 chown -R root:root /etc/homegear
