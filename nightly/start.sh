@@ -127,15 +127,16 @@ chown ${USER}:${USER} /var/run/homegear > /dev/null 2>&1
 /usr/bin/homegear -u ${USER} -g ${USER} -p /var/run/homegear/homegear.pid &
 
 while true; do
-	/usr/bin/homegear -e lt
+	/usr/bin/homegear -e rc 'if ($hg->nodeBlueIsReady() === true) exit(0); exit(1);'
 	if [ $? -eq 0 ]; then
 		echo "Homegear started."
 		break
 	fi
 	echo "Waiting for Homegear to start..."
-sleep 5
+	sleep 5
 done
 
+sleep 5
 /usr/bin/homegear-management -p /var/run/homegear/homegear-management.pid &
 /usr/bin/homegear-webssh -p /var/run/homegear/homegear-webssh.pid &
 /usr/bin/homegear-influxdb -u ${USER} -g ${USER} -p /var/run/homegear/homegear-influxdb.pid &
