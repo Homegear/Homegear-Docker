@@ -95,17 +95,24 @@ if ! [ -f /etc/homegear/homegear.crt ]; then
 	chmod 400 /etc/homegear/homegear.key
 fi
 
-chown -R root:root /etc/homegear
-chown ${USER}:${USER} /etc/homegear/*.key
-chown ${USER}:${USER} /etc/homegear/*.pem
-chown ${USER}:${USER} /etc/homegear/nodeBlueCredentialKey.txt
-chown ${USER}:${USER} /etc/homegear/ca/private/*.key
+chown -R root:root /etc/homegear > /dev/null 2>&1
+chown ${USER}:${USER} /etc/homegear/*.key > /dev/null 2>&1
+chown ${USER}:${USER} /etc/homegear/*.pem > /dev/null 2>&1
+chown ${USER}:${USER} /etc/homegear/nodeBlueCredentialKey.txt > /dev/null 2>&1
+chown ${USER}:${USER} /etc/homegear/ca/private/*.key > /dev/null 2>&1
+echo "Setting permissions on /etc/homegear..."
 find /etc/homegear -type d -exec chmod 755 {} \;
+echo "Setting ownership on /var/log/homegear..."
 chown -R ${USER}:${USER} /var/log/homegear /var/lib/homegear
+echo "Setting permissions on /var/log/homegear..."
 find /var/log/homegear -type d -exec chmod 750 {} \;
+echo "Setting permissions on /var/log/homegear..."
 find /var/log/homegear -type f -exec chmod 640 {} \;
+echo "Setting permissions on /var/lib/homegear..."
 find /var/lib/homegear -type d -exec chmod 750 {} \;
+echo "Setting permissions on /var/lib/homegear..."
 find /var/lib/homegear -type f -exec chmod 640 {} \;
+echo "Setting permissions on /var/lib/homegear/scripts..."
 find /var/lib/homegear/scripts -type f -exec chmod 550 {} \;
 
 TZ=$(echo $TZ | tr -d '"') # Some users report quotes around the string - remove them
@@ -114,11 +121,21 @@ if [[ -n $TZ ]]; then
 fi
 
 mkdir -p /var/run/homegear
-chown ${USER}:${USER} /var/run/homegear
+chown ${USER}:${USER} /var/run/homegear > /dev/null 2>&1
 
 /etc/homegear/homegear-start.sh
 /usr/bin/homegear -u ${USER} -g ${USER} -p /var/run/homegear/homegear.pid &
+
+while true; do
+	/usr/bin/homegear -e lt
+	if [ $? -eq 0 ]; then
+		echo "Homegear started."
+		break
+	fi
+	echo "Waiting for Homegear to start..."
 sleep 5
+done
+
 /usr/bin/homegear-management -p /var/run/homegear/homegear-management.pid &
 /usr/bin/homegear-webssh -p /var/run/homegear/homegear-webssh.pid &
 /usr/bin/homegear-influxdb -u ${USER} -g ${USER} -p /var/run/homegear/homegear-influxdb.pid &
