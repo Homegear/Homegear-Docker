@@ -1,10 +1,9 @@
 #!/bin/bash
 
-cd nightly
-./buildImage.sh
+cd "$(dirname "$(realpath "$0")")"
 
-cd ../testing
-./buildImage.sh
+./nightly/buildImage.sh
 
-cd ../stable
-./buildImage.sh
+./testing/buildImage.sh
+
+./stable/buildImage.sh
