@@ -100,19 +100,19 @@ chown ${USER}:${USER} /etc/homegear/*.key > /dev/null 2>&1
 chown ${USER}:${USER} /etc/homegear/*.pem > /dev/null 2>&1
 chown ${USER}:${USER} /etc/homegear/nodeBlueCredentialKey.txt > /dev/null 2>&1
 chown ${USER}:${USER} /etc/homegear/ca/private/*.key > /dev/null 2>&1
-echo "Setting permissions on /etc/homegear..."
+echo "Setting directory permissions on /etc/homegear..."
 find /etc/homegear -type d -exec chmod 755 {} \;
 echo "Setting ownership on /var/log/homegear..."
 chown -R ${USER}:${USER} /var/log/homegear /var/lib/homegear
-echo "Setting permissions on /var/log/homegear..."
+echo "Setting directory permissions on /var/log/homegear..."
 find /var/log/homegear -type d -exec chmod 750 {} \;
-echo "Setting permissions on /var/log/homegear..."
+echo "Setting file permissions on /var/log/homegear..."
 find /var/log/homegear -type f -exec chmod 640 {} \;
-echo "Setting permissions on /var/lib/homegear..."
+echo "Setting directory permissions on /var/lib/homegear..."
 find /var/lib/homegear -type d -exec chmod 750 {} \;
-echo "Setting permissions on /var/lib/homegear..."
+echo "Setting file permissions on /var/lib/homegear..."
 find /var/lib/homegear -type f -exec chmod 640 {} \;
-echo "Setting permissions on /var/lib/homegear/scripts..."
+echo "Setting file permissions on /var/lib/homegear/scripts..."
 find /var/lib/homegear/scripts -type f -exec chmod 550 {} \;
 
 TZ=$(echo $TZ | tr -d '"') # Some users report quotes around the string - remove them
@@ -123,6 +123,7 @@ fi
 mkdir -p /var/run/homegear
 chown ${USER}:${USER} /var/run/homegear > /dev/null 2>&1
 
+tail -n 0 -f /var/log/homegear/homegear.log &
 /etc/homegear/homegear-start.sh
 /usr/bin/homegear -u ${USER} -g ${USER} -p /var/run/homegear/homegear.pid &
 child=$!
@@ -141,10 +142,9 @@ sleep 5
 /usr/bin/homegear-management -p /var/run/homegear/homegear-management.pid &
 /usr/bin/homegear-webssh -p /var/run/homegear/homegear-webssh.pid &
 /usr/bin/homegear-influxdb -u ${USER} -g ${USER} -p /var/run/homegear/homegear-influxdb.pid &
-tail -f /var/log/homegear/homegear-webssh.log &
-tail -f /var/log/homegear/homegear-flows.log &
-tail -f /var/log/homegear/homegear-scriptengine.log &
-tail -f /var/log/homegear/homegear-management.log &
-tail -f /var/log/homegear/homegear-influxdb.log &
-tail -f /var/log/homegear/homegear.log &
+tail -n 0 -f /var/log/homegear/homegear-webssh.log &
+tail -n 0 -f /var/log/homegear/homegear-flows.log &
+tail -n 0 -f /var/log/homegear/homegear-scriptengine.log &
+tail -n 0 -f /var/log/homegear/homegear-management.log &
+tail -n 0 -f /var/log/homegear/homegear-influxdb.log &
 wait "$child"
