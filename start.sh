@@ -125,6 +125,7 @@ chown ${USER}:${USER} /var/run/homegear > /dev/null 2>&1
 
 /etc/homegear/homegear-start.sh
 /usr/bin/homegear -u ${USER} -g ${USER} -p /var/run/homegear/homegear.pid &
+child=$!
 
 while true; do
 	/usr/bin/homegear -e rc 'if ($hg->nodeBlueIsReady() === true) exit(0); exit(1);'
@@ -146,5 +147,4 @@ tail -f /var/log/homegear/homegear-scriptengine.log &
 tail -f /var/log/homegear/homegear-management.log &
 tail -f /var/log/homegear/homegear-influxdb.log &
 tail -f /var/log/homegear/homegear.log &
-child=$!
 wait "$child"

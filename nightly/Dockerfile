@@ -21,7 +21,7 @@ ENV LC_ALL=en_US.UTF-8
 
 VOLUME ["/etc/homegear", "/var/lib/homegear", "/var/log/homegear"]
 
-COPY start.sh /start.sh
+COPY ../start.sh /start.sh
 RUN chmod +x /start.sh
 ENTRYPOINT ["/bin/bash", "-c", "/start.sh"]
 
