@@ -129,7 +129,7 @@ tail -n 0 -f /var/log/homegear/homegear.log &
 child=$!
 
 while true; do
-	/usr/bin/homegear -e rc 'if ($hg->nodeBlueIsReady() === true) exit(0); exit(1);'
+	/usr/bin/homegear -e rc 'if ($hg->nodeBlueIsReady() === true) exit(0); exit(1);' > /dev/null 2>&1
 	if [ $? -eq 0 ]; then
 		echo "Homegear started."
 		break
